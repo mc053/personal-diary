@@ -5,3 +5,7 @@ function login() {
 function create() {
     window.location.pathname = "/create";
 }
+
+function home() {
+    window.location.pathname = "/";
+}
