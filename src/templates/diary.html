@@ -1,0 +1,21 @@
+<html>
+    <head>
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='utils.js')}}">
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <h1 class="title2">Welcome, {{ username }}!</h1>
+        <input type="button" value="Add text" onclick="addText()" />
+        <input type="button" value="Add picture" onclick="addPicture()" />
+        <div id="container">
+            {% for diary_instance in diary_instances %}
+                <div id="left">Edit</div>
+                <div id="right">Delete</div>
+                <div id="center">{{ diary_instance.date }}<br>
+                {{ diary_instance.display_in_html() }}</div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

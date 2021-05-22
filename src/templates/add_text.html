@@ -1,0 +1,15 @@
+<html>
+    <head>
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='utils.js')}}">
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <h1>Enter your text here:</h1>
+        <form action="/add/text" method="post">
+            <input type="text" name="text" />
+            <input type="submit" value="Add" />
+        </form>
+    </body>
+</html>
