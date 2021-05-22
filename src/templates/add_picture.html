@@ -1,0 +1,15 @@
+<html>
+    <head>
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='utils.js')}}">
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <h1>Select your picture here:</h1>
+        <form action="/add/picture" method="post" enctype="multipart/form-data">
+            <input type="file" name="picture" value="Select picture" />
+            <input type="submit" value="Add" />
+        </form>
+    </body>
+</html>
