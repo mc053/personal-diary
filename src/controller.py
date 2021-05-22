@@ -4,7 +4,7 @@ import datetime
 import uuid
 from werkzeug.utils import secure_filename
 from model import TextEntry, PictureEntry
-from flask import url_for
+from flask import url_for, redirect
 
 # Files inside the user's folder
 password_file_name = "password.txt"
@@ -81,6 +81,17 @@ def add_entry_to_users_diary(username, entry_to_add):
     with open(diary_path, mode='w') as file:
         file.write(json.dumps(diary_entries))
 
+def delete_text_from_users_diary(username, diary_index):
+    diary_path = get_users_diary_path(username)
+
+    with open(diary_path) as file:
+        diary_entries = json.load(file)
+
+    diary_entries.pop(diary_index)
+
+    with open(diary_path, mode='w') as file:
+        file.write(json.dumps(diary_entries))
+
 def password_is_wrong(username, password):
     complete_password_file_name = os.path.join(get_user_path(username), password_file_name)
     password_file = open(complete_password_file_name, "r")
@@ -88,6 +99,10 @@ def password_is_wrong(username, password):
     password_file.close()
 
     return password != password_file_content
+
+def check_if_user_is_logged_in(session):
+    if 'username' not in session:
+        return redirect(url_for('index'))
 
 def get_users_diary_path(username):
     return get_user_path(username) + "/diary.json"
