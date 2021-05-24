@@ -11,7 +11,6 @@
         <input type="button" value="Add picture" onclick="addPicture()" />
         <div id="container">
             {% for diary_index, diary_instance in enumerate(diary_instances) %}
-                <! negative diary_index because the list is shown in reverse order ––>
                 {% if diary_instance.__class__.__name__ == "TextEntry"%}
                     <input type="button" onclick="deleteText({{diary_index}})" id="right" value="Delete"/>
                     <input type="button" onclick="editText({{diary_index}})" id="left" value="Edit"/>

@@ -1,7 +1,7 @@
 import os
 import json
-from datetime import datetime
 import uuid
+from datetime import datetime
 from werkzeug.utils import secure_filename
 from model import TextEntry, PictureEntry
 from flask import url_for, redirect
@@ -39,10 +39,6 @@ def load_diary_instances_for_username(username):
 
     with open(diary_path) as file:
         diary_entries = json.load(file)
-
-#    diary_entries = sorted(diary_entries,
-#    key=lambda entry: datetime.strptime(entry['date'], date_format),
-#    reverse=True)
 
     for diary_entry in diary_entries:
         if diary_entry['entryType'] == TextEntry.__name__:
@@ -86,6 +82,54 @@ def add_entry_to_users_diary(username, entry_to_add):
     with open(diary_path, mode='w') as file:
         file.write(json.dumps(diary_entries))
 
+def edit_text_in_users_diary(username, text_to_save, diary_index):
+    diary_path = get_users_diary_path(username)
+
+    with open(diary_path) as file:
+        diary_entries = json.load(file)
+
+    old_entry = diary_entries[diary_index]
+    new_entry = {
+        "date": old_entry['date'],
+        "content": text_to_save,
+        "entryType": "TextEntry"
+    }
+    
+    diary_entries.pop(diary_index)
+    diary_entries.insert(diary_index, new_entry)
+
+    with open(diary_path, mode='w') as file:
+        file.write(json.dumps(diary_entries))
+
+def edit_picture_in_users_diary(username, picture_to_save, diary_index):
+    picture_format = "." + picture_to_save.filename.split('.')[1]
+    # In case there are different pictures with same name
+    unique_filename = str(uuid.uuid4()) + picture_format
+    picture_to_save.save(get_dir_path() + "/static/user_pictures/" + secure_filename(unique_filename))
+
+    diary_path = get_users_diary_path(username)
+
+    with open(diary_path) as file:
+        diary_entries = json.load(file)
+
+    old_entry = diary_entries[diary_index]
+    new_entry = {
+        "date": old_entry['date'],
+        "content": "user_pictures/" + unique_filename,
+        "entryType": "PictureEntry"
+    }
+
+    delete_picture_from_users_diary(username, diary_index)
+
+    # Refresh diary entries after deletion
+    with open(diary_path) as file:
+        diary_entries = json.load(file)
+
+    diary_entries.insert(diary_index, new_entry)
+
+    with open(diary_path, mode='w') as file:
+        file.write(json.dumps(diary_entries))
+
 def delete_text_from_users_diary(username, diary_index):
     diary_path = get_users_diary_path(username)
 
@@ -111,25 +155,6 @@ def delete_picture_from_users_diary(username, diary_index):
 
     with open(diary_path, mode='w') as file:
         file.write(json.dumps(diary_entries))
-
-def edit_text_in_users_diary(username, text_to_save, diary_index):
-    diary_path = get_users_diary_path(username)
-
-    with open(diary_path) as file:
-        diary_entries = json.load(file)
-
-    old_entry = diary_entries[diary_index]
-    new_entry = {
-        "date": old_entry['date'],
-        "content": text_to_save,
-        "entryType": "TextEntry"
-    }
-    
-    diary_entries.pop(diary_index)
-    diary_entries.insert(diary_index, new_entry)
-
-    with open(diary_path, mode='w') as file:
-        file.write(json.dumps(diary_entries))    
 
 def password_is_wrong(username, password):
     complete_password_file_name = os.path.join(get_user_path(username), password_file_name)
