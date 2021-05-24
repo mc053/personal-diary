@@ -10,13 +10,13 @@
         <input type="button" value="Add text" onclick="addText()" />
         <input type="button" value="Add picture" onclick="addPicture()" />
         <div id="container">
-            {% for diary_index, diary_instance in enumerate(diary_instances, start=1) %}
-                <div id="left">Edit</div>
-                <! negative diary_index because the list is shown in reverse order ––>
+            {% for diary_index, diary_instance in enumerate(diary_instances) %}
                 {% if diary_instance.__class__.__name__ == "TextEntry"%}
-                    <input type="button" onclick="deleteText(-{{diary_index}})" id="right" value="Delete"/>
+                    <input type="button" onclick="deleteText({{diary_index}})" id="right" value="Delete"/>
+                    <input type="button" onclick="editText({{diary_index}})" id="left" value="Edit"/>
                 {% elif diary_instance.__class__.__name__ == "PictureEntry" %}
-                    <input type="button" onclick="deletePicture(-{{diary_index}})" id="right" value="Delete"/>Delete
+                    <input type="button" onclick="deletePicture({{diary_index}})" id="right" value="Delete"/>
+                    <input type="button" onclick="editPicture({{diary_index}})" id="left" value="Edit"/>
                 {% endif %}
                 <div id="center">{{ diary_instance.date }}<br>
                 {{ diary_instance.display_in_html() }}</div>
