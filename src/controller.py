@@ -92,6 +92,21 @@ def delete_text_from_users_diary(username, diary_index):
     with open(diary_path, mode='w') as file:
         file.write(json.dumps(diary_entries))
 
+def delete_picture_from_users_diary(username, diary_index):
+    diary_path = get_users_diary_path(username)
+
+    with open(diary_path) as file:
+        diary_entries = json.load(file)
+
+    entry_to_delete = diary_entries[diary_index]
+    picture_to_delete = entry_to_delete['content']
+    os.remove(get_dir_path() + "/static/" + picture_to_delete)
+
+    diary_entries.pop(diary_index)
+
+    with open(diary_path, mode='w') as file:
+        file.write(json.dumps(diary_entries))
+
 def password_is_wrong(username, password):
     complete_password_file_name = os.path.join(get_user_path(username), password_file_name)
     password_file = open(complete_password_file_name, "r")

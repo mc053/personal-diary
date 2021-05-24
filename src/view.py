@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from controller import username_exists, setup_new_user, password_is_wrong, load_diary_instances_for_username, add_text_to_users_diary, add_picture_to_users_diary, delete_text_from_users_diary
+from controller import username_exists, setup_new_user, password_is_wrong, load_diary_instances_for_username, add_text_to_users_diary, add_picture_to_users_diary, delete_text_from_users_diary, delete_picture_from_users_diary
 app = Flask(__name__)
 
 app.secret_key = 'software_engineering'
@@ -87,9 +87,16 @@ def delete_text(diary_index):
     if 'username' not in session:
         return redirect(url_for('index'))
     username = session['username']
-    delete_text_from_users_diary(username, int(diary_index))                # Negative ints are not supported in url
+    delete_text_from_users_diary(username, int(diary_index))                # Negative ints are not supported in url, so cast string to int
     return redirect(url_for('diary'))
 
+@app.route('/delete/picture/<diary_index>')
+def delete_picture(diary_index):
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    username = session['username']
+    delete_picture_from_users_diary(username, int(diary_index))             # Negative ints are not supported in url, so cast string to int
+    return redirect(url_for('diary'))
 
 @app.route('/logout')
 def logout():
