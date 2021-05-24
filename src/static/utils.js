@@ -17,3 +17,11 @@ function addText() {
 function addPicture() {
     window.location.pathname = "/add/picture"
 }
+
+function deleteText(index) {
+    window.location.pathname = "/delete/text/" + index
+}
+
+function deletePicture(index) {
+    window.location.pathname = "/delete/picture/" + index
+}
