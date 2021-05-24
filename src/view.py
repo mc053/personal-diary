@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from controller import username_exists, setup_new_user, password_is_wrong, load_diary_instances_for_username, add_text_to_users_diary, add_picture_to_users_diary, delete_text_from_users_diary, delete_picture_from_users_diary
+from controller import username_exists, setup_new_user, password_is_wrong, load_diary_instances_for_username, add_text_to_users_diary, add_picture_to_users_diary, delete_text_from_users_diary, delete_picture_from_users_diary, edit_text_in_users_diary
 app = Flask(__name__)
 
 app.secret_key = 'software_engineering'
@@ -82,22 +82,49 @@ def add_picture():
     else:
         return render_template("add_picture.html")
 
-@app.route('/delete/text/<diary_index>')
+@app.route('/delete/text/<int:diary_index>')
 def delete_text(diary_index):
     if 'username' not in session:
         return redirect(url_for('index'))
     username = session['username']
-    delete_text_from_users_diary(username, int(diary_index))                # Negative ints are not supported in url, so cast string to int
+    delete_text_from_users_diary(username, diary_index)
     return redirect(url_for('diary'))
 
-@app.route('/delete/picture/<diary_index>')
+@app.route('/delete/picture/<int:diary_index>')
 def delete_picture(diary_index):
     if 'username' not in session:
         return redirect(url_for('index'))
     username = session['username']
-    delete_picture_from_users_diary(username, int(diary_index))             # Negative ints are not supported in url, so cast string to int
+    delete_picture_from_users_diary(username, diary_index)
     return redirect(url_for('diary'))
 
+@app.route('/edit/text/<int:diary_index>', methods=["GET", "POST"])
+def edit_text(diary_index):
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    username = session['username']
+    if request.method == 'POST':
+        text_to_save = request.form['text']
+        edit_text_in_users_diary(username, text_to_save, diary_index)
+        return redirect(url_for('diary'))
+    else:
+        diary_instances = load_diary_instances_for_username(username)
+        return render_template("edit_text.html",
+        diary_instance=diary_instances[diary_index],
+        diary_index=diary_index)
+    
+@app.route('/edit/picture/<int:diary_index>', methods=["GET", "POST"])
+def edit_picture(diary_index):
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        username = session['username']
+        picture_to_add = request.files['picture']
+        add_picture_to_users_diary(username, picture_to_add)
+        return redirect(url_for('diary'))
+    else:
+        return render_template("edit_picture.html")
+    
 @app.route('/logout')
 def logout():
     session.pop('username', None)

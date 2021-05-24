@@ -25,3 +25,11 @@ function deleteText(index) {
 function deletePicture(index) {
     window.location.pathname = "/delete/picture/" + index
 }
+
+function editText(index) {
+    window.location.pathname = "/edit/text/" + index
+}
+
+function editPicture(index) {
+    window.location.pathname = "/edit/picture/" + index
+}
