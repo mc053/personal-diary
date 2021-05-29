@@ -2,12 +2,20 @@ function login() {
     window.location.pathname = "/login";
 }
 
+function logout() {
+    window.location.pathname = "/logout";
+}
+
 function create() {
     window.location.pathname = "/create";
 }
 
 function home() {
     window.location.pathname = "/";
+}
+
+function diary() {
+    window.location.pathname = "/diary";
 }
 
 function addText() {
