@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
+        <input type="button" value="Logout" onclick="logout()" />
         <h1>Current picture from {{ diary_instance.date }}:</h1>
         <img src={{ diary_instance.content }} width="500" />
         <h1>Select your new picture here:</h1>
@@ -13,6 +14,7 @@
         enctype="multipart/form-data">
             <input type="file" name="picture" value="Select picture" />
             <input type="submit" value="Save" />
+            <button type="button" onclick="diary()">Cancel</button>
         </form>
     </body>
 </html>

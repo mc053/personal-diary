@@ -57,9 +57,15 @@ def add_text_to_users_diary(username, text_to_add):
         "entryType": "TextEntry"
     }
     add_entry_to_users_diary(username, entry_to_add)
+
+def file_has_not_an_image_format(picture_to_add):
+    supported_formats = [".jpeg", ".jpg", ".png"]
+    picture_format = get_file_format(picture_to_add)
+
+    return picture_format not in supported_formats
     
 def add_picture_to_users_diary(username, picture_to_add):
-    picture_format = "." + picture_to_add.filename.split('.')[1]
+    picture_format = get_file_format(picture_to_add)
     # In case there are different pictures with same name
     unique_filename = str(uuid.uuid4()) + picture_format
     picture_to_add.save(get_dir_path() + "/static/user_pictures/" + secure_filename(unique_filename))
@@ -70,6 +76,9 @@ def add_picture_to_users_diary(username, picture_to_add):
         "entryType": "PictureEntry"
     }
     add_entry_to_users_diary(username, entry_to_add)
+
+def get_file_format(file):
+    return "." + file.filename.split('.')[1]
 
 def add_entry_to_users_diary(username, entry_to_add):
     diary_path = get_users_diary_path(username)

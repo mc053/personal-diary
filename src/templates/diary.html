@@ -9,6 +9,7 @@
         <h1 class="title2">Welcome, {{ username }}!</h1>
         <input type="button" value="Add text" onclick="addText()" />
         <input type="button" value="Add picture" onclick="addPicture()" />
+        <input type="button" value="Logout" onclick="logout()" />
         <div id="container">
             {% for diary_index, diary_instance in enumerate(diary_instances) %}
                 {% if diary_instance.__class__.__name__ == "TextEntry"%}

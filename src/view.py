@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from controller import username_exists, setup_new_user, password_is_wrong, load_diary_instances_for_username, add_text_to_users_diary, add_picture_to_users_diary, edit_text_in_users_diary, edit_picture_in_users_diary, delete_text_from_users_diary, delete_picture_from_users_diary
+from controller import username_exists, setup_new_user, password_is_wrong, load_diary_instances_for_username, add_text_to_users_diary, add_picture_to_users_diary, edit_text_in_users_diary, edit_picture_in_users_diary, delete_text_from_users_diary, delete_picture_from_users_diary, file_has_not_an_image_format
 app = Flask(__name__)
 
 app.secret_key = 'software_engineering'
@@ -14,11 +14,20 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if not username:                                                # Empty username
-            return 'Username must not be empty'
+            return render_template("login_create.html",
+            title="Login", 
+            submit_value="Login",
+            error_message="Username must not be empty")
         elif not username_exists(username):                             # Username does not exist
-            return 'Username does not exist'
+            return render_template("login_create.html",
+            title="Login", 
+            submit_value="Login",
+            error_message="Username does not exist")
         elif password_is_wrong(username, password):                     # Wrong password
-            return 'Wrong password'
+            return render_template("login_create.html",
+            title="Login", 
+            submit_value="Login",
+            error_message="Password is wrong")
         else:
             session['username'] = username
             return redirect(url_for('diary'))
@@ -33,11 +42,20 @@ def create():
         username = request.form['username']
         password = request.form['password']
         if not username:                                                # Empty username
-            return 'Username must not be empty'
+            return render_template("login_create.html",
+            title="Create an account", 
+            submit_value="Create",
+            error_message="Username must not be empty")
         elif username_exists(username):                                 # Username already exists
-            return 'Username already exists'
+            return render_template("login_create.html",
+            title="Create an account", 
+            submit_value="Create",
+            error_message="Username already exists")
         elif len(password) < 5:                                         # Password is too short
-            return 'Password is too short'
+            return render_template("login_create.html",
+            title="Create an account", 
+            submit_value="Create",
+            error_message="Password has to be at least 5 characters long")
         else:                                                           # Everything is good
             setup_new_user(username, password)
             session['username'] = username
@@ -65,6 +83,9 @@ def add_text():
     if request.method == 'POST':
         username = session['username']
         text_to_add = request.form['text']
+        if not text_to_add:
+            return render_template("add_text.html",
+            error_message="Text must not be empty")
         add_text_to_users_diary(username, text_to_add)
         return redirect(url_for('diary'))
     else:
@@ -77,6 +98,12 @@ def add_picture():
     if request.method == 'POST':
         username = session['username']
         picture_to_add = request.files['picture']
+        if not picture_to_add:
+            return render_template("add_picture.html",
+            error_message="No file has been selected")
+        elif file_has_not_an_image_format(picture_to_add):
+            return render_template("add_picture.html",
+            error_message="The selected file has not an image format")
         add_picture_to_users_diary(username, picture_to_add)
         return redirect(url_for('diary'))
     else:

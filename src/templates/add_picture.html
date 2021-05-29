@@ -6,10 +6,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
+        <input type="button" value="Logout" onclick="logout()" />
         <h1>Select your picture here:</h1>
         <form action="/add/picture" method="post" enctype="multipart/form-data">
             <input type="file" name="picture" value="Select picture" />
             <input type="submit" value="Add" />
+            <button type="button" onclick="diary()">Cancel</button>
         </form>
+        <p>{{ error_message }}</p>
     </body>
 </html>
