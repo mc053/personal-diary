@@ -11,6 +11,12 @@
 }
 .title2 {
     font-size: 400%;
+    text-align: center;
+}
+.title3 {
+    font-size: 200%;
+    text-align: center;
+    white-space: nowrap;
 }
 .button {
     background-color: #e7e7e7;
@@ -28,13 +34,50 @@
 .button1:hover {
     background-color: white;
 }
+.logoutButton {
+    position:absolute;
+    top: 20px;
+    right:20px;
+}
+.editSymbol {
+    cursor: pointer;
+}
+.deleteSymbol {
+    cursor: pointer;
+}
 .copyright {
     color: gray;
     font-size: 15px;
     margin: 70px;
     text-align: center;
 }
-#container{width:100%;}
-#left{float:left;width:100px;}
-#right{float:right;width:100px;}
-#center{margin:0 auto;width:100px;}
+.picture_entry {
+    position:relative;
+    left:-50px;
+}
+.text_entry {
+    text-align: center;
+    font-size: 125%;
+}
+#container{
+    margin:auto;
+    width:70%;
+}
+#left{
+    float:left;
+    width:50px;
+    padding-top: 25px;
+}
+#right{
+    float:right;
+    width:50px;
+    padding-top: 25px;
+}
+#center{
+    margin:0 auto;
+    position:relative;
+    left:-5px;
+    top: -17px;
+    width:400px;
+    padding-top: 25px;
+}

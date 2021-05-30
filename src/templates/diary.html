@@ -7,19 +7,21 @@
     </head>
     <body>
         <h1 class="title2">Welcome, {{ username }}!</h1>
-        <input type="button" value="Add text" onclick="addText()" />
-        <input type="button" value="Add picture" onclick="addPicture()" />
-        <input type="button" value="Logout" onclick="logout()" />
+        <input class="button button1 logoutButton" type="button" value="Logout" onclick="logout()" />
+        <div style="text-align: center">
+            <input class="button button1" type="button" value="Add text" onclick="addText()" />
+            <input class="button button1" type="button" value="Add picture" onclick="addPicture()" />
+        </div>
         <div id="container">
             {% for diary_index, diary_instance in enumerate(diary_instances) %}
                 {% if diary_instance.__class__.__name__ == "TextEntry"%}
-                    <input type="button" onclick="deleteText({{diary_index}})" id="right" value="Delete"/>
-                    <input type="button" onclick="editText({{diary_index}})" id="left" value="Edit"/>
+                    <img class="deleteSymbol" id="right" src={{ url_for('static', filename='resources/Delete_symbol.jpeg')}} onclick="deleteText({{diary_index}})"/>
+                    <img class="editSymbol" id="left" src={{ url_for('static', filename='resources/Edit_symbol.png')}} onclick="editText({{diary_index}})"/>
                 {% elif diary_instance.__class__.__name__ == "PictureEntry" %}
-                    <input type="button" onclick="deletePicture({{diary_index}})" id="right" value="Delete"/>
-                    <input type="button" onclick="editPicture({{diary_index}})" id="left" value="Edit"/>
+                    <img class="deleteSymbol" id="right" src={{ url_for('static', filename='resources/Delete_symbol.jpeg')}} onclick="deletePicture({{diary_index}})"/>
+                    <img class="editSymbol" id="left" src={{ url_for('static', filename='resources/Edit_symbol.png')}} onclick="editPicture({{diary_index}})"/>
                 {% endif %}
-                <div id="center">{{ diary_instance.date }}<br>
+                <div id="center"><h1 class="title3">{{ diary_instance.date }}</h1>
                 {{ diary_instance.display_in_html() }}</div>
             {% endfor %}
         </div>

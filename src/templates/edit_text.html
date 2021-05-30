@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-        <input type="button" value="Logout" onclick="logout()" />
+        <input class="button button1 logoutButton" type="button" value="Logout" onclick="logout()" />
         <h1>Current text from {{ diary_instance.date }}:</h1>
         <p>{{ diary_instance.content }}</p>
         <h1>Enter your new text here:</h1>
