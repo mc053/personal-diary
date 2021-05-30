@@ -77,9 +77,6 @@ def add_picture_to_users_diary(username, picture_to_add):
     }
     add_entry_to_users_diary(username, entry_to_add)
 
-def get_file_format(file):
-    return "." + file.filename.split('.')[1]
-
 def add_entry_to_users_diary(username, entry_to_add):
     diary_path = get_users_diary_path(username)
 
@@ -111,7 +108,7 @@ def edit_text_in_users_diary(username, text_to_save, diary_index):
         file.write(json.dumps(diary_entries))
 
 def edit_picture_in_users_diary(username, picture_to_save, diary_index):
-    picture_format = "." + picture_to_save.filename.split('.')[1]
+    picture_format = get_file_format(picture_to_save)
     # In case there are different pictures with same name
     unique_filename = str(uuid.uuid4()) + picture_format
     picture_to_save.save(get_dir_path() + "/static/user_pictures/" + secure_filename(unique_filename))
@@ -138,6 +135,13 @@ def edit_picture_in_users_diary(username, picture_to_save, diary_index):
 
     with open(diary_path, mode='w') as file:
         file.write(json.dumps(diary_entries))
+
+def get_file_format(file):
+    splitted_file = file.filename.rsplit(sep='.', maxsplit=1)
+    if len(splitted_file) < 2:
+        return 'Unknown'
+    print(splitted_file[1])
+    return "." + splitted_file[1]
 
 def delete_text_from_users_diary(username, diary_index):
     diary_path = get_users_diary_path(username)

@@ -27,11 +27,15 @@ function addPicture() {
 }
 
 function deleteText(index) {
-    window.location.pathname = "/delete/text/" + index
+    if (confirm("Do you really want to delete this text?")) {
+        window.location.pathname = "/delete/text/" + index
+    }
 }
 
 function deletePicture(index) {
-    window.location.pathname = "/delete/picture/" + index
+    if (confirm("Do you really want to delete this picture?")) {
+        window.location.pathname = "/delete/picture/" + index
+    }
 }
 
 function editText(index) {
