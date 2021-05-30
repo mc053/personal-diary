@@ -114,12 +114,17 @@ def edit_text(diary_index):
     if 'username' not in session:
         return redirect(url_for('index'))
     username = session['username']
+    diary_instances = load_diary_instances_for_username(username)
     if request.method == 'POST':
         text_to_save = request.form['text']
+        if not text_to_save:
+            return render_template("edit_text.html",
+            diary_instance=diary_instances[diary_index],
+            diary_index=diary_index,
+            error_message="Text must not be empty")
         edit_text_in_users_diary(username, text_to_save, diary_index)
         return redirect(url_for('diary'))
     else:
-        diary_instances = load_diary_instances_for_username(username)
         return render_template("edit_text.html",
         diary_instance=diary_instances[diary_index],
         diary_index=diary_index)
@@ -129,12 +134,22 @@ def edit_picture(diary_index):
     if 'username' not in session:
         return redirect(url_for('index'))
     username = session['username']
+    diary_instances = load_diary_instances_for_username(username)
     if request.method == 'POST':
         picture_to_save = request.files['picture']
+        if not picture_to_save:
+            return render_template("edit_picture.html",
+            diary_instance=diary_instances[diary_index],
+            diary_index=diary_index,
+            error_message="No file has been selected")
+        elif file_has_not_an_image_format(picture_to_save):
+            return render_template("edit_picture.html",
+            diary_instance=diary_instances[diary_index],
+            diary_index=diary_index,
+            error_message="The selected file has not an image format")
         edit_picture_in_users_diary(username, picture_to_save, diary_index)
         return redirect(url_for('diary'))
     else:
-        diary_instances = load_diary_instances_for_username(username)
         return render_template("edit_picture.html",
         diary_instance=diary_instances[diary_index],
         diary_index=diary_index)

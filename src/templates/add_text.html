@@ -6,13 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-        <input type="button" value="Logout" onclick="logout()" />
-        <h1>Enter your text here:</h1>
-        <form action="/add/text" method="post">
-            <input type="text" name="text" />
-            <input type="submit" value="Add" />
-            <button type="button" onclick="diary()">Cancel</button>
-        </form>
-        <p>{{ error_message }}</p>
+        <input class="button button1 logoutButton" type="button" value="Logout" onclick="logout()" />
+        <h1 class="title2">Add text</h1>
+        <div class="centered" style="top:30%">
+            <h1 class="title3">Enter your text here:</h1>
+            <form action="/add/text" method="post">
+                <textarea class="addTextField" name="text"></textarea>
+                <!-- <input class="addTextField" type="text" name="text"/> -->
+                <input class="button button1" style="margin-top:40px" type="submit" value="Add" />
+                <button class="button button1" style="margin-top:40px" type="button" onclick="diary()">Cancel</button>
+            </form>
+            <p class="errorMessage">{{ error_message }}</p>
+        </div>
     </body>
 </html>
